@@ -12,11 +12,11 @@
 
 [DATA ANALYSIS](#data-analysis)
 
-## DATA VISUALIZATION
+[DATA VISUALIZATION](#data-visualization)
 
-## FINDINGS AND RESULT
+[FINDINGS AND RESULT](#findings-and-result)
 
-## RECOMMENDATION
+[RECOMMENDATION](#recommendation)
 
 ### project overview
   The goal of this project is to analyze customer subscription data to extract valuable insights that can drive decision-making, enhance customer retention, and maximize revenue. The analysis will focus on customer demographics, subscription types, regional trends, and financial performance.
@@ -103,17 +103,20 @@ There should be a special promo or award for top subscribers
 -	The file was converted to csv format and imported into SQL 
 -	Customer data Table were created 
 
-QUERY 1
+#### QUERY 1
 ```sql
 select * from [dbo].[capstonecustomerdata]
 ```
 (NUMBER OF CUSTOMER PER REGION)
+```sql
 SELECT COUNT(customerName) AS totalcustomer, region
 FROM [dbo].[capstonecustomerdata]
 WHERE region IN ('north', 'south', 'west', 'east')
 GROUP BY region
 ORDER BY region
-QUERY 2 (MOST POPULAR SUBSCRIPTION TYPE BY NUMBER OF CUSTOMER)
+```
+#### QUERY 2 (MOST POPULAR SUBSCRIPTION TYPE BY NUMBER OF CUSTOMER)
+```sql
 SELECT 
     subscriptionType,
     COUNT(customerName) AS CustomerCount
@@ -123,13 +126,17 @@ GROUP BY
     subscriptionType
 ORDER BY 
     CustomerCount DESC
-QUERY 2 (CUSTOMER THAT CANCELED THEIR SUBSCRIPTION WITHIN 6MONTHS)
+```
+#### QUERY 2 (CUSTOMER THAT CANCELED THEIR SUBSCRIPTION WITHIN 6MONTHS)
+```sql
 SELECT customerName
 FROM [dbo].[capstonecustomerdata]
 WHERE canceled = 'true' 
 AND SubscriptionEnd >= DATEADD(MONTH, -6, GETDATE()) 
 ORDER BY SubscriptionEnd DESC
-QUERY 3 (SUBSCRIPTION DURATION FOR EACH CUSTOMER)
+```
+#### QUERY 3 (SUBSCRIPTION DURATION FOR EACH CUSTOMER)
+```sql
 SELECT 
     customerName, 
     SUM(DATEDIFF(DAY, 
@@ -153,7 +160,9 @@ FROM (
         subscriptionStart IS NOT NULL AND
         subscriptionEnd IS NOT NULL
 ) AS customerDurations
-QUERY 5 (CUSTOMERS SUBSCRIPTION THAT IS MORE THAN 12 MONTHS)
+```
+#### QUERY 5 (CUSTOMERS SUBSCRIPTION THAT IS MORE THAN 12 MONTHS)
+```sql
 SELECT
     customerName,
     DATEDIFF(MONTH, 
@@ -167,7 +176,9 @@ WHERE
     AND DATEDIFF(MONTH, 
                  CONVERT(datetime, subscriptionStart, 120), 
                  CONVERT(datetime, subscriptionEnd, 120)) > 12
-QUERY 6 (TOTAL REVENUE BY SUBSCRIPTION TYPE)
+```
+#### QUERY 6 (TOTAL REVENUE BY SUBSCRIPTION TYPE)
+```sql
 select
 subscriptiontype,
 sum(revenue) as totalrevenue
@@ -180,10 +191,34 @@ FROM [dbo].[capstonecustomerdata]
 WHERE canceled = 'TRUE'
 GROUP BY region
 ORDER BY cancellation_count DESC
-QUERY 14(TOTAL NUMBER OF ACTIVE AND CANCELED SUBSCRIPTION)
+```
+#### QUERY 7(TOTAL NUMBER OF ACTIVE AND CANCELED SUBSCRIPTION)
+```sql
 SELECT 
   SUM(CASE WHEN canceled ='TRUE' THEN 1 ELSE 0 END) AS totalcanceled,
   SUM(CASE WHEN canceled = 'FALSE' THEN 1 ELSE 0 END) AS totalactive
 FROM [dbo].[capstonecustomerdata]
+```
 
+### data visualization
+
+#### POWER BI VISUALIZATION
+-	The file was uploaded from excel workbook
+-	The data was transformed by removing NULL column.
+  
+![customer data](https://github.com/user-attachments/assets/d37ea9aa-dc92-4eb2-b450-ac7ef16c3db0)
+
+### findings and result
+
+These findings enable data-driven strategies, helping the company to optimize customer engagement, increase revenue, and better manage customer retention.
+
+### recommendation
+
+1.	Focus on Premium Subscribers: Since Premium subscribers are the highest contributors to revenue, focusing on retention, personalized offers, and loyalty programs for this segment will likely yield the highest.
+
+2.	Target Basic subscribers for Upselling: For customers in basic scription, targeted campaigns that encourage upgrades to Standard or Premium subscriptions could increase their lifetime value.
+
+3.	Regional Marketing: High-performing regions should continue to be nurtured, while regions with a high proportion of Basic subscribers might benefit from promotional activities to encourage upgrades.
+
+4.	Product and Inventory Optimization: Ensure sufficient stock of top-performing products, especially around peak sales months, to meet demand and minimize stockouts.
 
