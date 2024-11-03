@@ -1,5 +1,5 @@
 # LITA-CUSTOMER-DATA-PROJECT
-
+## TABLE OF CONTENT
 [PROJECT OVERVIEW](#project-overview)
 
 [DATA SOURCE](#data-source)
